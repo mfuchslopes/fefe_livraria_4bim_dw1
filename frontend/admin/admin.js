@@ -506,8 +506,7 @@ async function logoutConfirmado() {
     const data = await res.json();
 
     if (data.status === 'deslogado') {
-      alert("Você saiu da sua conta.");
-      window.location.href = "../login/login.html";  
+      window.location.href = "../logout/logout.html";  
     } else {
       alert("Erro ao sair. Tente novamente.");
     }
