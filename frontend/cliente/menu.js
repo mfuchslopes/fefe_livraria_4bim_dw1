@@ -14,7 +14,7 @@ function getCarrinhoAtualCookie() {
 
 function configurarMenuExibicao() {
   // Esconde todos os menus inicialmente
-  document.getElementById('cadastros-menu').style.display = 'none';
+  //document.getElementById('cadastros-menu').style.display = 'none';
   document.getElementById('meus-carrinhos-menu').style.display = 'none';
   document.getElementById('meus-pedidos-menu').style.display = 'none';
   document.getElementById('pagamento-menu').style.display = 'none';
@@ -54,7 +54,7 @@ async function usuarioAutorizado() {
       document.getElementById('meus-carrinhos-menu').style.display = 'block';
       document.getElementById('meus-pedidos-menu').style.display = 'block';
       document.getElementById('pagamento-menu').style.display = 'block';
-      document.getElementById('minha-conta-menu').style.display = 'block';
+      //document.getElementById('minha-conta-menu').style.display = 'block';
     }
     ehFuncionario = (data.tipoUsuario === 'funcionario');
   } else {
@@ -90,7 +90,7 @@ function carregarGeneros() {
         generoSection.dataset.id = genero.id_genero;
         generoSection.innerHTML = `
           <div class="genero-top">
-            <img src="img/${genero.imagem_genero || 'default_genre.png'}" alt="${genero.nome_genero}" class="genero-img">
+            <img src="../img/${genero.imagem_genero || 'default_genre.png'}" alt="${genero.nome_genero}" class="genero-img">
             <div class="genero-header">
               <h2>${genero.nome_genero}</h2>
               <p>${genero.descricao_genero || ''}</p>
@@ -239,7 +239,7 @@ async function carregarLivrosPorGenero(idGenero, generoSection, options = {}) {
         const card = document.createElement('div');
         card.className = 'livro-card';
         card.innerHTML = `
-          <img src="img/${livro.imagem_livro}" alt="${livro.nome_livro}" class="livro-img">
+          <img src="../img/${livro.imagem_livro}" alt="${livro.nome_livro}" class="livro-img">
           <div class="livro-info">
             <h3>${livro.nome_livro}</h3>
             <p class="livro-preco">R$${livro.preco}</p>
@@ -505,3 +505,30 @@ async function getCarrinho() {
   return carrinho;
 }
 
+async function logoutConfirmado() {
+  const confirmar = confirm("Você tem certeza que deseja deslogar?");
+
+  if (!confirmar) {
+    return; // Usuário desistiu
+  }
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/login/logout`, {
+      method: 'POST',
+      credentials: 'include'
+    });
+
+    const data = await res.json();
+
+    if (data.status === 'deslogado') {
+      alert("Você saiu da sua conta.");
+      window.location.href = "../login/login.html";  
+    } else {
+      alert("Erro ao sair. Tente novamente.");
+    }
+
+  } catch (err) {
+    console.error("Erro ao deslogar:", err);
+    alert("Erro ao deslogar. Tente novamente.");
+  }
+}

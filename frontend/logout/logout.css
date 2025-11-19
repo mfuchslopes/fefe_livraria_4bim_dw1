@@ -1,0 +1,107 @@
+/* ===== RESET ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #0a0e0e 0%, #1a1f1f 50%, #0a0e0e 100%);
+  color: #e6d6b8;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  text-align: center;
+}
+
+/* ===== CONTAINER ===== */
+.container {
+  background: rgba(20, 25, 25, 0.7);
+  border: 1px solid rgba(191, 167, 111, 0.4);
+  backdrop-filter: blur(12px);
+  padding: 40px;
+  width: 100%;
+  max-width: 420px;
+  border-radius: 16px;
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.5);
+  animation: fadeIn 0.6s ease;
+}
+
+/* ===== TÍTULO ===== */
+h1 {
+  font-size: 2rem;
+  margin-bottom: 15px;
+  color: #bfa76f;
+  text-shadow: 0 0 20px rgba(191, 167, 111, 0.4);
+  letter-spacing: 1px;
+  animation: glow 3s infinite;
+}
+
+/* ===== TEXTO ===== */
+.mensagem {
+  margin-bottom: 30px;
+  font-size: 1.1rem;
+  color: #e6d6b8;
+  line-height: 1.5;
+  text-shadow: 0 0 12px rgba(191, 167, 111, 0.25);
+}
+
+/* ===== BOTÕES ===== */
+.botoes {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+button {
+  padding: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  box-shadow: 0 4px 15px rgba(191, 167, 111, 0.25);
+}
+
+/* Botão de continuar */
+#btnVoltar {
+  background: linear-gradient(135deg, #bfa76f 0%, #8d7a52 100%);
+  color: #0a0e0e;
+}
+
+#btnVoltar:hover {
+  background: linear-gradient(135deg, #e6d6b8 0%, #bfa76f 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(191, 167, 111, 0.5);
+}
+
+/* Botão de login */
+#btnLogin {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(191, 167, 111, 0.4);
+  color: #e6d6b8;
+}
+
+#btnLogin:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: #bfa76f;
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px rgba(191, 167, 111, 0.4);
+}
+
+/* ===== ANIMAÇÕES ===== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes glow {
+  0% { text-shadow: 0 0 15px rgba(191, 167, 111, 0.3); }
+  50% { text-shadow: 0 0 30px rgba(191, 167, 111, 0.6); }
+  100% { text-shadow: 0 0 15px rgba(191, 167, 111, 0.3); }
+}

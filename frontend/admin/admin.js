@@ -63,14 +63,6 @@ async function usuarioAutorizado() {
   }
 }
 
-async function logout2() {
-  // Corrigido para usar API_BASE_URL
-  await fetch(API_BASE_URL + '/logout', {
-    method: 'POST',
-    credentials: 'include'
-  });
-  window.location.href = API_BASE_URL + '/inicio';
-}
 
 // usuarioAutorizado();
 document.addEventListener('DOMContentLoaded', () => {
@@ -282,14 +274,6 @@ async function carregarLivrosPorGenero(idGenero, generoSection, options = {}) {
   }
 }
 
-
-function handleUserAction(value) {
-  if (value === 'gerenciar-conta') {
-    window.location.href = 'pessoa/pessoa.html';
-  } else if (value === 'sair') {
-    window.location.href = 'login/login.html';
-  }
-}
 
 const menuLinks = document.querySelectorAll('.menu-link');
 
@@ -506,3 +490,30 @@ async function getCarrinho() {
   return carrinho;
 }
 
+async function logoutConfirmado() {
+  const confirmar = confirm("Você tem certeza que deseja deslogar?");
+
+  if (!confirmar) {
+    return; // Usuário desistiu
+  }
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/login/logout`, {
+      method: 'POST',
+      credentials: 'include'
+    });
+
+    const data = await res.json();
+
+    if (data.status === 'deslogado') {
+      alert("Você saiu da sua conta.");
+      window.location.href = "../login/login.html";  
+    } else {
+      alert("Erro ao sair. Tente novamente.");
+    }
+
+  } catch (err) {
+    console.error("Erro ao deslogar:", err);
+    alert("Erro ao deslogar. Tente novamente.");
+  }
+}

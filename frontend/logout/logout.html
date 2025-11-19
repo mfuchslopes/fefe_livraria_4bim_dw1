@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logout</title>
+  <link rel="stylesheet" href="logout.css">
+</head>
+
+<body>
+  <div class="container">
+    <h1>Você saiu! </h1>
+    <p class="mensagem">
+      Prontinho! Você acabou de fazer logout.<br>
+      (Prometo não contar para ninguém que você esqueceu de fechar a aba)
+    </p>
+
+    <div class="botoes">
+      <button id="btnVoltar">Continuar navegando</button>
+      <button id="btnLogin">Fazer login novamente</button>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE_URL = 'http://localhost:3001';
+
+    // Ao carregar a página, solicita logout do backend
+    async function realizarLogout() {
+      try {
+        await fetch(`${API_BASE_URL}/login/logout`, {
+          method: 'POST',
+          credentials: 'include'
+        });
+      } catch (err) {
+        console.error("Erro ao deslogar:", err);
+      }
+    }
+
+    realizarLogout();
+
+    // Botão: navegar sem login
+    document.getElementById("btnVoltar").onclick = () => {
+      window.location.href = "../cliente/menu.html";
+    };
+
+    // Botão: voltar para login
+    document.getElementById("btnLogin").onclick = () => {
+      window.location.href = "../login/login.html";
+    };
+  </script>
+</body>
+
+</html>

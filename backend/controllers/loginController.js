@@ -129,15 +129,26 @@ exports.verificarSenha = async (req, res) => {
 
 // Logout
 exports.logout = (req, res) => {
+  // Limpa os cookies relacionados ao login
   res.clearCookie('usuarioLogado', {
     sameSite: 'None',
     secure: true,
     httpOnly: true,
     path: '/',
   });
-  console.log("Cookie 'usuarioLogado' removido com sucesso");
-  res.json({ status: 'deslogado' });
-}
+
+  res.clearCookie('tipoUsuario', {
+    sameSite: 'None',
+    secure: true,
+    httpOnly: true,
+    path: '/',
+  });
+
+  console.log("Cookies de autenticação removidos com sucesso");
+
+  // Envia resposta simples para o frontend
+  return res.json({ status: 'deslogado' });
+};
 
 
 exports.criarPessoa = async (req, res) => {

@@ -7,6 +7,9 @@ router.post('/verificarEmail', loginController.verificarEmail);
 router.post('/verificarSenha', loginController.verificarSenha);
 router.post('/verificaSeUsuarioEstaLogado', loginController.verificaSeUsuarioEstaLogado);
 
+// 🚀 ROTA DE LOGOUT
+router.post('/logout', loginController.logout);
+
 // Rota para obter pessoa por email
 router.get('/email/:email', loginController.obterPessoaPorEmail);
 

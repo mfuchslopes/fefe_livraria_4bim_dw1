@@ -3,7 +3,9 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Avap - Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logout</title>
+  <link rel="stylesheet" href="login.css">
 </head>
 
 <body>
@@ -64,7 +66,7 @@
       //  alert("Resposta do servidor: " + JSON.stringify(data));
 
       if (data.status === 'ok') {
-        window.location.href = API_BASE_URL + "/menu";
+        window.location.href = API_BASE_URL + "/cliente/menu.html";
       } else {
         alert("Senha incorreta!");
       }
