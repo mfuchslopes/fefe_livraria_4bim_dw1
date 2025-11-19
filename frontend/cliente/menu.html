@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Livraria Online</title>
+  <link rel="stylesheet" href="menu.css">
+</head>
+
+<body>
+
+  <header>
+    <div class="header-top">
+      <a href="#" class="logo">LIVRARIA FUCHS</a>
+      <button id="btnAbrirCarrinho">Carrinho</button>
+      <div class="header-actions">
+        <select id="user-actions" style="display:none;">
+          <option value="">Minha Conta</option>
+          <option value="gerenciar-conta">Gerenciar Conta</option>
+          <option value="sair">Sair</option>
+        </select>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <ul class="nav__menu">
+        <li class="nav__menu-item" id="meus-carrinhos-menu" style="display:none">
+          <a href="../carrinho/usuarioCarrinho.html" class="menu-link">Meus Carrinhos</a>
+        </li>
+        <li class="nav__menu-item" id="meus-pedidos-menu" style="display:none">
+          <a href="../pedidos/usuarioPedidos.html" class="menu-link">Meus Pedidos</a>
+        </li>
+        <li class="nav__menu-item" id="pagamento-menu" style="display:none">
+          <a href="../pagamento/usuarioPagamento.html" class="menu-link">Pagamento</a>
+        </li>
+        <!-- <li class="nav__menu-item" id="minha-conta-menu" style="display:none">
+          <a href="pessoa/contaLogada.html" class="menu-link">Minha Conta</a>
+        </li> -->
+        <li class="nav__menu-item" id="cadastro-menu">
+          <a href="cadastro/cadastroUsuario.html" class="menu-link">Cadastro</a>
+        </li>
+        <li class="nav__menu-item" id="logout-menu" style="display:none">
+          <a href="logout/logout.html" class="menu-link">Log out</a>
+        </li>
+        <li class="nav__menu-item" id="login-menu">
+          <a href="login/login.html" class="menu-link">Login</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section id="generos-container">
+      <!-- Gêneros serão inseridos aqui -->
+    </section>
+  </main>
+
+  <aside id="carrinho-lateral">
+    <div class="carrinho-header">
+      <h2>Meu Carrinho</h2>
+      <button id="btnFecharCarrinho">&times;</button>
+    </div>
+    <div id="carrinho-itens">
+      <p style="color:#e6d6b8; text-align: center; padding: 2rem;">Seu carrinho está vazio.</p>
+    </div>
+    <div id="carrinho-total">
+      <span>Total: R$ 0,00</span>
+    </div>
+  </aside>
+
+  <footer>
+    <p>&copy; 2025 - Livraria Online | Todos os direitos reservados</p>
+  </footer>
+
+  <script src="menu.js"></script>
+
+</body>
+</html>

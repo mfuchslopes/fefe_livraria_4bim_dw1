@@ -6,7 +6,7 @@ const path = require('path');
 
 exports.abrirCrudLivro = (req, res) => {
   console.log('livroController - Rota /abrirCrudLivro - abrir o crudLivro');
-  res.sendFile(path.join(__dirname, '../../frontend/livro/livro.html'));
+  res.sendFile(path.join(__dirname, '../../frontend/admin/livro/livro.html'));
 }
 
 exports.listarLivros = async (req, res) => {

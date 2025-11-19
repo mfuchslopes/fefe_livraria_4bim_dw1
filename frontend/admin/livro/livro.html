@@ -4,20 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRUD - Autor</title>
-    <link rel="stylesheet" href="./autor.css">
+    <title>CRUD - Livro</title>
+    <link rel="stylesheet" href="/admin/livro/livro.css">
 </head>
 
 <body>
     <header>
-        <h1>CRUD Autor</h1>
+        <h1>CRUD Livro</h1>
     </header>
 
     <main>
         <section class="form-section">
-            <h2>Cadastro de Autor</h2>
+            <h2>Cadastro de Livro</h2>
 
-            <form id="autorForm">
+            <form id="livroForm">
                 <div class="search-container">
                     <label for="searchId">Buscar por ID:</label>
                     <div class="search-input-group">
@@ -34,55 +34,42 @@
                 </div>
 
                 <fieldset id="formFields">
-                    <legend>Dados da Autor</legend>
+                    <legend>Dados do Livro</legend>
 
                     <div class="form-group">
-                        <label for="nome_autor">Nome do autor:</label>
-                        <input type="text" id="nome_autor" name="nome_autor" required>
-                    </div> 
-
-                 
+                        <label for="nome_livro">Nome do livro:</label>
+                        <input type="text" id="nome_livro" name="nome_livro" required>
+                        <label for="descricao_livro">Descrição do livro:</label>
+                        <input type="text" id="descricao_livro" name="descricao_livro" required>
+                        <label for="imagem_livro">Imagem do livro:</label>
+                        <input type="file" id="imagem_livro" name="imagem_livro" required>
+                        <label for="preco">Preço unitário do livro:</label>
+                        <input type="number" id="preco" name="preco" required>
+                        <label for="quant_estoque">Quantidade do livro no estoque:</label>
+                        <input type="number" id="quant_estoque" name="quant_estoque" required>
+                        <label for="data_lanc">Data de lançamento do livro:</label>
+                        <input type="date" id="data_lanc" name="data_lanc" required>
+                    </div>
                 </fieldset>
             </form>
-
- 
-
-            <div class="livrosDoAutor">
-                <div>Livros do Autor                   
-                    <button type="button" id="btnAdicionarLivro" onclick="adicionarLivro()" class="btn-secondary btn-small btnAdicionarLivro"><i
-                            class="fas fa-box-open"></i> Adicionar Livro</button> 
-                </div>
-                <div class="livro-table-container">
-                    <table id="livrosTable">
-                        <thead>
-                            <tr>
-                                <th>ID Autor</th>
-                                <th>ID</th>
-                                <th>Livro</th>
-                                <th>Salvar</th>
-                                <th>Excluir</th>
-                            </tr>
-                        </thead>
-                        <tbody id="livrosTableBody">
-                            <!-- Livros serão carregados dinamicamente -->
-                        </tbody>
-                    </table>
-                </div>
-
-
         </section>
 
         <section class="list-section">
             <div class="table-container">
-                <table id="autoresTable">
+                <table id="livrosTable">
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Nome</th>                            
+                            <th>Nome</th>
+                            <th>Descrição</th>
+                            <th>Imagem</th>
+                            <th>Preço</th>
+                            <th>Estoque</th>
+                            <th>Data de lançamento</th>
                         </tr>
                     </thead>
-                    <tbody id="autoresTableBody">
-                         <!-- Dados serão carregados dinamicamente -->
+                    <tbody id="livrosTableBody">
+                        <!-- Dados serão carregados dinamicamente -->
                     </tbody>
                 </table>
             </div>
@@ -90,12 +77,12 @@
     </main>
 
     <footer>
-        <p>&copy; 2025 CRUD Autor</p>
+        <p>&copy; 2025 CRUD Livro</p>
     </footer>
 
     <div id="messageContainer" class="message-container"></div>
 
-    <script src="./autor.js" defer></script>
+    <script src="/admin/livro/livro.js" defer></script>
 
 </body>
 

@@ -371,7 +371,7 @@ function renderizarTabelaGeneros(generos) {
             <td>${genero.nome_genero}</td>
             <td>${genero.descricao_genero}</td>
             <td>
-                ${genero.imagem_genero ? `<img src="../img/${genero.imagem_genero}" alt="${nome_genero}" style="max-width:60px;max-height:60px;">` : ''}
+                ${genero.imagem_genero ? `<img src="../../img/${genero.imagem_genero}" alt="${nome_genero}" style="max-width:60px;max-height:60px;">` : ''}
             </td>
             <td>${genero.slug_genero}</td>
         `;

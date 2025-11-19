@@ -6,7 +6,7 @@ const path = require('path');
 
 exports.abrirCrudGenero = (req, res) => {
   console.log('generoController - Rota /abrirCrudGenero - abrir o crudGenero');
-  res.sendFile(path.join(__dirname, '../../frontend/genero/genero.html'));
+  res.sendFile(path.join(__dirname, '../../frontend/admin/genero/genero.html'));
 }
 
 exports.listarGeneros = async (req, res) => {

@@ -10,7 +10,7 @@ router.post('/verificaSeUsuarioEstaLogado', loginController.verificaSeUsuarioEst
 // Rota para obter pessoa por email
 router.get('/email/:email', loginController.obterPessoaPorEmail);
 
-// Rotas 
+// Rotas  
 router.get('/', loginController.listarPessoas);
 router.post('/', loginController.criarPessoa);
 router.get('/:id', loginController.obterPessoa);

@@ -7,7 +7,7 @@ const path = require('path');
 
 exports.abrirCrudCarrinho = (req, res) => {
   console.log('carrinhoController - Rota /abrirCrudCarrinho - abrir o crudCarrinho');
-  res.sendFile(path.join(__dirname, '../../frontend/carrinho/carrinho.html'));
+  res.sendFile(path.join(__dirname, '../../frontend/admin/carrinho/carrinho.html'));
 }
 
 exports.listarCarrinho = async (req, res) => {

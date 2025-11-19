@@ -6,7 +6,7 @@ const path = require('path');
 
 exports.abrirCrudPagamento = (req, res) => {
   console.log('pagamentoController - Rota /abrirCrudPagamento - abrir o crudPagamento');
-  res.sendFile(path.join(__dirname, '../../frontend/pagamento/pagamento.html'));
+  res.sendFile(path.join(__dirname, '../../frontend/admin/pagamento/pagamento.html'));
 }
 
 exports.listarPagamentos = async (req, res) => {

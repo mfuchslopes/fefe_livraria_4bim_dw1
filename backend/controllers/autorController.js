@@ -6,7 +6,7 @@ const path = require('path');
 
 exports.abrirCrudAutor = (req, res) => {
   console.log('autorController - Rota /abrirCrudAutor - abrir o crudAutor');
-  res.sendFile(path.join(__dirname, '../../frontend/autor/autor.html'));
+  res.sendFile(path.join(__dirname, '../../frontend/admin/autor/autor.html'));
 }
 
 exports.listarAutors = async (req, res) => {

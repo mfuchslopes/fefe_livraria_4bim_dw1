@@ -6,7 +6,7 @@ const path = require('path');
 
 exports.abrirCrudPessoa = (req, res) => {
 //  console.log('pessoaController - Rota /abrirCrudPessoa - abrir o crudPessoa');
-  res.sendFile(path.join(__dirname, '../../frontend/pessoa/pessoa.html'));
+  res.sendFile(path.join(__dirname, '../../frontend/admin/pessoa/pessoa.html'));
 }
 
 exports.listarPessoas = async (req, res) => {

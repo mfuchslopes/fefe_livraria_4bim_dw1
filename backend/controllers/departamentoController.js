@@ -6,7 +6,7 @@ const path = require('path');
 
 exports.abrirCrudDepartamento = (req, res) => {
   console.log('departamentoController - Rota /abrirCrudDepartamento - abrir o crudDepartamento');
-  res.sendFile(path.join(__dirname, '../../frontend/departamento/departamento.html'));
+  res.sendFile(path.join(__dirname, '../../frontend/admin/departamento/departamento.html'));
 }
 
 exports.listarDepartamentos = async (req, res) => {

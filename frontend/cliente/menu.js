@@ -43,7 +43,7 @@ async function usuarioAutorizado() {
     document.getElementById('logout-menu').style.display = 'block';
     document.getElementById('cadastro-menu').style.display = 'none';
     if (data.tipoUsuario === 'funcionario') {
-      document.getElementById('cadastros-menu').style.display = 'block';
+      window.location.href = '../admin/admin.html';
     }
     if (data.tipoUsuario === 'cliente' || data.tipoUsuario === 'funcionario') {
       document.getElementById('meus-carrinhos-menu').style.display = 'block';

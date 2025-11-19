@@ -306,7 +306,7 @@ function renderizarTabelaLivros(livros) {
                     </td>
                     <td>${livro.nome_livro}</td>  
                     <td>${livro.descricao_livro}</td>
-                    <td><img src="../img/${livro.imagem_livro}" alt="Capa do livro" width="50"></td>
+                    <td><img src="../../img/${livro.imagem_livro}" alt="Capa do livro" width="50"></td>
                     <td>${livro.preco}</td>                
                     <td>${livro.quant_estoque}</td>                  
                     <td>${formatarData(livro.data_lanc)}</td>                  
