@@ -2,13 +2,26 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Meus Carrinhos</title>
-  <link rel="stylesheet" href="carrinho.css">
+  <link rel="stylesheet" href="usuarioCarrinho.css">
 </head>
 <body>
-  <h2>Meus Carrinhos</h2>
-  <div id="usuario-carrinhos-container"></div>
-  <button onclick="adicionarUsuarioCarrinho()">Adicionar Carrinho</button>
+  <div class="container">
+    <header>
+      <h1>Meus Carrinhos de Compras</h1>
+      <button class="btn-novo-carrinho" onclick="criarNovoCarrinho()">
+        <span class="icon">+</span> Novo Carrinho
+      </button>
+    </header>
+
+    <div id="mensagem-feedback" class="mensagem-feedback"></div>
+    
+    <div id="usuario-carrinhos-container" class="carrinhos-container">
+      <div class="loading">Carregando carrinhos...</div>
+    </div>
+  </div>
+
   <script src="usuarioCarrinho.js"></script>
 </body>
 </html>

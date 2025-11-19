@@ -7,13 +7,18 @@ window.onload = () => {
   configurarMenuExibicao();
 };
 
+function getCarrinhoAtualCookie() {
+    const match = document.cookie.match(/(?:^|; )carrinhoAtual=([^;]*)/);
+    return match ? decodeURIComponent(match[1]) : null;
+}
+
 function configurarMenuExibicao() {
   // Esconde todos os menus inicialmente
   document.getElementById('cadastros-menu').style.display = 'none';
   document.getElementById('meus-carrinhos-menu').style.display = 'none';
   document.getElementById('meus-pedidos-menu').style.display = 'none';
   document.getElementById('pagamento-menu').style.display = 'none';
-  document.getElementById('minha-conta-menu').style.display = 'none';
+  // document.getElementById('minha-conta-menu').style.display = 'none';
   document.getElementById('logout-menu').style.display = 'none';
   document.getElementById('login-menu').style.display = 'block';
   document.getElementById('cadastro-menu').style.display = 'block';
@@ -476,9 +481,18 @@ async function getCarrinho() {
       });
       if (resCarrinho.ok) {
         const carrinhos = await resCarrinho.json();
-        // Pega o carrinho mais recente com os itens já incluídos
-        carrinho = Array.isArray(carrinhos) && carrinhos.length ? carrinhos[0] : { itens: [] };
-        if (!carrinho.itens) carrinho.itens = [];
+        const carrinhoAtual = getCarrinhoAtualCookie();
+
+        if (Array.isArray(carrinhos) && carrinhos.length > 0) {
+          if (carrinhoAtual) {
+            const escolhido = carrinhos.find(c => c.id_carrinho == carrinhoAtual);
+            carrinho = escolhido || carrinhos[0];
+          } else {
+            carrinho = carrinhos[0];
+          }
+
+          if (!carrinho.itens) carrinho.itens = [];
+        }
       }
     } catch (err) {
       console.error('Erro ao buscar carrinho no backend:', err);

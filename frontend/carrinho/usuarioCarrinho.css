@@ -1,355 +1,458 @@
-/* Reset e configurações básicas */
-
+/* RESET E BASE */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  }
-
-html, body {
-height: 100%;
-background: #111;
-color: #e6d6b8;
-font-family: 'Segoe UI', 'Arial', sans-serif;
-overflow-x: hidden;
 }
 
-/* Header */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #0a0e0e 0%, #1a1f1f 50%, #0a0e0e 100%);
+  color: #e6d6b8;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+/* CONTAINER PRINCIPAL */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ===== HEADER DA PÁGINA ===== */
 header {
-padding: 0.5rem 0;
-background: rgba(35,43,43,0.6);
-backdrop-filter: blur(8px);
-box-shadow: 0 4px 24px #0a0e0e88;
-border-bottom: 2px solid #bfa76f66;
-text-align: center;
-position: relative;
-z-index: 10;
+  background: rgba(20, 25, 25, 0.9);
+  border: 1px solid rgba(191, 167, 111, 0.3);
+  backdrop-filter: blur(12px);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 35px rgba(0,0,0,0.6);
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 header h1 {
-font-size: 2.3rem;
-color: #bfa76f;
-letter-spacing: 3px;
-text-shadow: 0 2px 10px #0a0e0ebb, 0 0 12px #bfa76f55;
-margin-bottom: 1rem;
+  color: #bfa76f;
+  font-size: 2rem;
+  font-weight: 700;
+  text-shadow: 0 0 18px rgba(191,167,111,0.3);
 }
 
-/* Main container */
-main {
-max-width: 900px;
-margin: 2rem auto;
-padding: 0 2rem;
-position: relative;
-z-index: 1;
+/* BOTÃO — segue o style do menu.css */
+.btn-novo-carrinho {
+  background: linear-gradient(135deg, #bfa76f 0%, #8d7a52 100%);
+  color: #0a0e0e;
+  border: none;
+  padding: 0.9rem 1.8rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(191, 167, 111, 0.35);
 }
 
-/* Sections */
-section {
-background: rgba(35,43,43,0.7);
-backdrop-filter: blur(12px);
-border-radius: 18px;
-box-shadow: 0 8px 32px #bfa76f33;
-border: 1.5px solid #bfa76f55;
-padding: 2rem;
-margin-bottom: 2rem;
-position: relative;
-overflow: hidden;
+.btn-novo-carrinho:hover {
+  background: linear-gradient(135deg, #e6d6b8 0%, #bfa76f 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(191,167,111,0.5);
 }
 
-section h2 {
-color: #bfa76f;
-font-size: 1.7rem;
-margin-bottom: 1.5rem;
-border-bottom: 2px solid #bfa76f66;
-padding-bottom: 0.5rem;
-text-shadow: 0 2px 12px #0a0e0e77, 0 0 12px #bfa76f44;
+/* ===== FEEDBACK ===== */
+.mensagem-feedback {
+  display: none;
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(191,167,111,0.3);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
 }
 
-/* Busca e formulários */
-.search-container,
-fieldset {
-background: rgba(46,64,87,0.22);
-border-radius: 14px;
-padding: 1.5rem;
-margin-bottom: 2rem;
-border: 1px solid #bfa76f55;
-box-shadow: 0 2px 12px #0a0e0e44;
-position: relative;
-z-index: 1;
+.mensagem-feedback.sucesso {
+  background: rgba(60, 120, 60, 0.25);
+  color: #9dd79b;
 }
 
-fieldset legend,
-.search-container label {
-font-weight: 600;
-color: #bfa76f;
-padding: 0 0.5rem;
-font-size: 1.1rem;
+.mensagem-feedback.erro {
+  background: rgba(120, 40, 40, 0.25);
+  color: #ffb8b8;
 }
 
-.form-group {
-margin-bottom: 1.2rem;
-display: flex;
-justify-content: space-between;
-flex-wrap: wrap;
-gap: 1rem;
+.mensagem-feedback.info {
+  background: rgba(40, 80, 100, 0.25);
+  color: #b0dfff;
 }
 
-.form-group label {
-display: block;
-margin-bottom: 0.3rem;
-font-weight: 600;
-color: #bfa76f;
-text-shadow: 0 0 4px #bfa76f44;
+/* ===== GRID DE CARRINHOS ===== */
+.carrinhos-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
 }
 
-.form-group input,
-.form-group select,
-.search-input-group input {
-flex: 1;
-min-width: 180px;
-padding: 0.8rem;
-border-radius: 8px;
-border: 1.5px solid #bfa76f55;
-background: rgba(46,64,87,0.35);
-color: #e6d6b8;
-font-size: 1rem;
-transition: border 0.2s, box-shadow 0.2s, background 0.2s;
-box-shadow: 0 2px 12px #0a0e0e22;
+/* ===== CARD DO CARRINHO ===== */
+.carrinho-card {
+  background: rgba(25, 30, 30, 0.85);
+  backdrop-filter: blur(14px);
+  border-radius: 14px;
+  padding: 1.8rem;
+  border: 1px solid rgba(191,167,111,0.25);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+  transition: all 0.3s ease;
 }
 
-.form-group input:focus,
-.form-group select:focus,
-.search-input-group input:focus {
-border-color: #bfa76f;
-outline: none;
-background: rgba(191,167,111,0.10);
-box-shadow: 0 0 0 3px #bfa76f44;
+.carrinho-card:hover {
+  border-color: #bfa76f;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 45px rgba(191,167,111,0.25);
 }
 
-.search-input-group {
-display: flex;
-gap: 1rem;
-align-items: center;
+.carrinho-card.carrinho-ativo {
+  border: 2px solid #bfa76f;
+  box-shadow: 0 15px 50px rgba(191,167,111,0.4);
 }
 
-/* Botões */
-.button-group {
-display: flex;
-gap: 1rem;
-justify-content: center;
-flex-wrap: wrap;
-margin-top: 1rem;
+/* HEADER DO CARD */
+.carrinho-header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(191,167,111,0.25);
+  padding-bottom: 1rem;
+  margin-bottom: 1.2rem;
 }
 
-button,
-.btn-primary,
-.btn-secondary,
-.btn-save,
-.btn-danger,
-.btn-cancel {
-padding: 0.6rem 1.7rem;
-background: rgba(46,64,87,0.25);
-color: #bfa76f;
-border: 2px solid #bfa76f66;
-border-radius: 12px;
-cursor: pointer;
-font-size: 1.1rem;
-font-weight: 600;
-box-shadow: 0 4px 16px #0a0e0e55;
-transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-backdrop-filter: blur(6px);
+.carrinho-info h3 {
+  color: #e6d6b8;
+  font-size: 1.4rem;
+  font-weight: 600;
 }
 
-button:hover,
-.btn-primary:hover,
-.btn-secondary:hover,
-.btn-save:hover,
-.btn-danger:hover,
-.btn-cancel:hover {
-background: rgba(191,167,111,0.5);
-color: #111;
-box-shadow: 0 8px 32px #bfa76f55;
+.carrinho-data {
+  font-size: 0.9rem;
+  color: #bfa76f;
 }
 
-/* Botão pequeno de busca dentro da tabela */
-.btn-id,
-.btn-buscar-pequeno {
-background: rgba(191,167,111,0.25);
-color: #bfa76f;
-padding: 0.4rem 0.8rem;
-font-size: 0.9rem;
-border-radius: 8px;
-border: 1.5px solid #bfa76f55;
-transition: all 0.2s ease;
-}
-.btn-id:hover,
-.btn-buscar-pequeno:hover {
-background: rgba(191,167,111,0.5);
-color: #111;
+/* BADGES */
+.badge {
+  padding: 6px 14px;
+  border-radius: 18px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid rgba(191,167,111,0.3);
+  background: rgba(191,167,111,0.1);
+  color: #e6d6b8;
 }
 
-/* Tabela */
-.table-container, .item-table-container {
-max-height: 400px;
-overflow-y: auto;
-overflow-x: auto;
-border: 1.5px solid #bfa76f55;
-border-radius: 14px;
-background: rgba(46,64,87,0.22);
-box-shadow: 0 2px 12px #0a0e0e44;
-margin-bottom: 2rem;
-scrollbar-width: thin;
-scrollbar-color: #bfa76f #232b2b;
+.badge-ativo {
+  background: linear-gradient(135deg, #bfa76f 0%, #8d7a52 100%);
+  color: #0a0e0e;
 }
 
-.table-container::-webkit-scrollbar {
-width: 10px;
-background: rgba(35,43,43,0.7);
-border-radius: 8px;
-}
-.table-container::-webkit-scrollbar-thumb {
-background: #bfa76f;
-border-radius: 8px;
-box-shadow: 0 2px 8px #bfa76f55;
-}
-.table-container::-webkit-scrollbar-thumb:hover {
-background: #e6d6b8;
+/* RESUMO */
+.carrinho-resumo {
+  padding: 1rem;
+  background: rgba(46,64,87,0.15);
+  border-radius: 10px;
+  border: 1px solid rgba(191,167,111,0.15);
+  margin-bottom: 1rem;
 }
 
-table {
-width: 100%;
-border-collapse: collapse;
-font-size: 0.95rem;
-color: #e6d6b8;
+.carrinho-resumo p {
+  color: #e6d6b8;
 }
 
-table thead {
-background: rgba(191,167,111,0.15);
-color: #bfa76f;
-position: sticky;
-top: 0;
-z-index: 10;
+/* LISTA DE ITENS */
+.carrinho-itens h4 {
+  color: #bfa76f;
+  margin-bottom: 0.6rem;
+  font-size: 1.1rem;
 }
 
-table th,
-table td {
-padding: 1rem;
-text-align: left;
-border-bottom: 1px solid #bfa76f55;
+.lista-itens {
+  list-style: none;
+  max-height: 180px;
+  overflow-y: auto;
 }
 
-table th {
-font-weight: 700;
-text-transform: uppercase;
-font-size: 0.95rem;
-letter-spacing: 0.5px;
-color: #bfa76f;
-text-shadow: 0 0 6px #bfa76f44;
+.item {
+  padding: 12px;
+  background: rgba(20,25,25,0.7);
+  border: 1px solid rgba(191,167,111,0.2);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  transition: 0.2s ease;
 }
 
-table tbody tr:hover {
-background-color: rgba(191,167,111,0.12);
-color: #111;
+.item:hover {
+  border-color: #bfa76f;
+  background: rgba(20,25,25,0.9);
 }
 
-table tbody tr:nth-child(even) {
-background-color: rgba(46,64,87,0.10);
+.item-nome {
+  color: #e6d6b8;
 }
 
-/* Grupo de livro dentro da tabela */
-.livro-group {
-display: flex;
-align-items: center;
-gap: 8px;
-height: 100%;
-}
-.livro-group input {
-flex-grow: 1;
-padding: 6px;
-border: 1.5px solid #bfa76f55;
-border-radius: 6px;
-background-color: rgba(46,64,87,0.35);
-color: #e6d6b8;
-height: 38px;
-}
-.livro-group input:focus {
-border-color: #bfa76f;
-background: rgba(191,167,111,0.10);
-box-shadow: 0 0 0 3px #bfa76f44;
+.item-quantidade {
+  color: #bfa76f;
+  font-weight: 700;
 }
 
-/* Mensagens */
-.message-container {
-position: fixed;
-top: 20px;
-right: 20px;
-z-index: 1000;
-}
-.message {
-padding: 1rem 1.5rem;
-border-radius: 8px;
-margin-bottom: 0.5rem;
-font-weight: 600;
-box-shadow: 0 4px 12px #bfa76f22;
-background: rgba(191,167,111,0.15);
-color: #bfa76f;
-border: 1px solid #bfa76f55;
-animation: slideIn 0.3s ease;
-}
-@keyframes slideIn {
-from { transform: translateX(100%); opacity: 0; }
-to { transform: translateX(0); opacity: 1; }
+/* MENSAGEM DE CARRINHO VAZIO */
+.carrinho-vazio-msg {
+  color: #999;
+  text-align: center;
 }
 
-/* Footer */
-footer {
-margin-top: 2.2rem;
-padding: 1.2rem;
-background: rgba(35,43,43,0.6);
-backdrop-filter: blur(8px);
-color: #e6d6b8;
-box-shadow: 0 -4px 24px #0a0e0e88;
-border-top: 2px solid #bfa76f66;
-font-size: 1rem;
-letter-spacing: 1px;
-text-align: center;
+/* AÇÕES DO CARD */
+.carrinho-acoes {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.2rem;
 }
 
-/* Responsividade */
-@media (max-width: 900px) {
-main { padding: 0 1rem; }
-section { padding: 1.2rem; }
-.table-container { max-height: 250px; }
+.btn {
+  flex: 1;
+  padding: 0.8rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s ease;
 }
 
-@media (max-width: 600px) {
-header h1 { font-size: 1.3rem; }
-section, .search-container, fieldset { padding: 0.7rem; }
-.button-group { flex-direction: column; gap: 0.5rem; }
-button { font-size: 0.95rem; padding: 0.6rem 1rem; }
-table th, table td { padding: 0.5rem; font-size: 0.85rem; }
-.message-container { top: 10px; right: 10px; left: 10px; }
+/* Botão padrão */
+.btn-selecionar {
+  background: linear-gradient(135deg, #bfa76f 0%, #8d7a52 100%);
+  color: #0a0e0e;
 }
 
-
-.item-table-container {
-    overflow-x: auto;
+.btn-selecionar:hover {
+  transform: translateY(-3px);
+  background: linear-gradient(135deg, #e6d6b8 0%, #bfa76f 100%);
 }
 
-div .item-table-container table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.95rem;
-    color: #e6d6b8;
+.btn-ativo {
+  background: #2e6c3b;
+  color: white;
 }
 
-#coisinhasDoCarrinho {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 10px;
+.btn-excluir {
+  background: #802a2a;
+  color: #e6d6b8;
 }
 
-#btnAdicionarItem {
-    margin: 10px;
+.btn-excluir:hover {
+  background: #a33a3a;
+  transform: translateY(-3px);
+}
+
+/* MENSAGEM DE VAZIO TOTAL */
+.vazio {
+  grid-column: 1 / -1;
+  background: rgba(20,25,25,0.9);
+  border: 1px solid rgba(191,167,111,0.2);
+  padding: 3rem;
+  border-radius: 14px;
+  text-align: center;
+  color: #e6d6b8;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+
+.vazio p:first-child {
+  color: #bfa76f;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+/* SCROLLBAR PERSONALIZADA */
+.lista-itens::-webkit-scrollbar {
+  width: 8px;
+}
+.lista-itens::-webkit-scrollbar-thumb {
+  background: #bfa76f;
+  border-radius: 6px;
+}
+.lista-itens::-webkit-scrollbar-thumb:hover {
+  background: #e6d6b8;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .carrinhos-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================================
+   ANIMAÇÕES E MICROINTERAÇÕES PREMIUM
+   ============================================================ */
+
+/* Fade-in global da página */
+body {
+  animation: fadeInPage 0.9s ease forwards;
+  opacity: 0;
+}
+
+@keyframes fadeInPage {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ------------------------------------------------------------
+   ANIMAÇÃO DOS CARDS DE CARRINHO AO APARECER
+   ------------------------------------------------------------ */
+.carrinho-card {
+  animation: cardEnter 0.7s ease forwards;
+}
+
+@keyframes cardEnter {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Delay automático para cada card */
+.carrinho-card:nth-child(1) { animation-delay: 0.05s; }
+.carrinho-card:nth-child(2) { animation-delay: 0.15s; }
+.carrinho-card:nth-child(3) { animation-delay: 0.25s; }
+.carrinho-card:nth-child(4) { animation-delay: 0.35s; }
+
+/* ------------------------------------------------------------
+   MICROINTERAÇÃO DE ILUMINAÇÃO DO HOVER
+   ------------------------------------------------------------ */
+.carrinho-card:hover {
+  box-shadow: 0 12px 55px rgba(191, 167, 111, 0.3);
+  transform: translateY(-6px);
+}
+
+/* Shine dourado suave */
+.carrinho-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(120deg, transparent, rgba(191,167,111,0.15), transparent);
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.4s ease;
+}
+
+.carrinho-card:hover::after {
+  opacity: 1;
+}
+
+/* ------------------------------------------------------------
+   ANIMAÇÃO DO CARRINHO ATIVO (pulse premium)
+   ------------------------------------------------------------ */
+.carrinho-card.carrinho-ativo {
+  animation: pulseActive 1.5s infinite ease-in-out;
+}
+
+@keyframes pulseActive {
+  0% { box-shadow: 0 0 15px rgba(191,167,111,0.3); }
+  50% { box-shadow: 0 0 35px rgba(191,167,111,0.55); }
+  100% { box-shadow: 0 0 15px rgba(191,167,111,0.3); }
+}
+
+/* ------------------------------------------------------------
+   ANIMAÇÃO DE APARECIMENTO DOS ITENS DO CARRINHO
+   ------------------------------------------------------------ */
+.item {
+  opacity: 0;
+  transform: translateX(-15px);
+  animation: itemEnter 0.4s ease forwards;
+}
+
+@keyframes itemEnter {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* delay automático */
+.item:nth-child(1) { animation-delay: 0.05s; }
+.item:nth-child(2) { animation-delay: 0.12s; }
+.item:nth-child(3) { animation-delay: 0.19s; }
+.item:nth-child(4) { animation-delay: 0.26s; }
+
+/* Hover luxuoso */
+.item:hover {
+  border-color: #bfa76f;
+  transform: translateX(5px);
+  background: rgba(191,167,111,0.1);
+}
+
+/* ------------------------------------------------------------
+   BOTÕES – clique com "pressionar" suave
+   ------------------------------------------------------------ */
+.btn, .btn-novo-carrinho {
+  transition: all 0.2s ease;
+}
+
+.btn:active,
+.btn-novo-carrinho:active {
+  transform: scale(0.93);
+  filter: brightness(0.8);
+}
+
+/* ------------------------------------------------------------
+   EFEITO DE LUZ DOURADA NOS BOTÕES AO PASSAR O MOUSE
+   ------------------------------------------------------------ */
+.btn:hover::before,
+.btn-novo-carrinho:hover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.25), transparent);
+  transform: translateX(-100%);
+  animation: shine 0.6s forwards ease;
+  pointer-events: none;
+}
+
+@keyframes shine {
+  to { transform: translateX(100%); }
+}
+
+/* ------------------------------------------------------------
+   FEEDBACK – animação de entrada
+   ------------------------------------------------------------ */
+.mensagem-feedback {
+  animation: slideFeedback 0.4s ease forwards;
+}
+
+@keyframes slideFeedback {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ------------------------------------------------------------
+   EMPTY STATE — animação suave
+   ------------------------------------------------------------ */
+.vazio {
+  animation: emptyFade 0.8s ease forwards;
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+@keyframes emptyFade {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }

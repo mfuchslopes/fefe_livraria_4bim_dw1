@@ -2,6 +2,7 @@ const API_BASE_URL = 'http://localhost:3001';
 
 document.addEventListener('DOMContentLoaded', carregarUsuarioCarrinhos);
 
+// Gerenciamento de cookies
 function setCarrinhoCookie(carrinho) {
   document.cookie = `carrinhoUsuario=${encodeURIComponent(JSON.stringify(carrinho))};path=/;max-age=604800`;
 }
@@ -11,74 +12,258 @@ function getCarrinhoCookie() {
   return match ? JSON.parse(decodeURIComponent(match[1])) : [];
 }
 
-async function carregarUsuarioCarrinhos() {
-  // Tenta buscar do backend, se logado
-  let carrinhos = [];
+function getCarrinhoAtualCookie() {
+  const match = document.cookie.match(/(?:^|; )carrinhoAtual=([^;]*)/);
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
+function setCarrinhoAtualCookie(idCarrinho) {
+  document.cookie = `carrinhoAtual=${encodeURIComponent(idCarrinho)};path=/;max-age=604800`;
+}
+
+// Exibe mensagem de feedback
+function exibirMensagem(texto, tipo = 'info') {
+  const mensagem = document.getElementById('mensagem-feedback');
+  mensagem.textContent = texto;
+  mensagem.className = `mensagem-feedback ${tipo}`;
+  mensagem.style.display = 'block';
+  
+  setTimeout(() => {
+    mensagem.style.display = 'none';
+  }, 3000);
+}
+
+// Verifica se usuário está logado
+async function verificarUsuarioLogado() {
   try {
-    const res = await fetch(`${API_BASE_URL}/carrinho/meusCarrinhos`, { credentials: 'include' });
-    if (res.ok) {
-      carrinhos = await res.json();
-    }
-  } catch {}
-  // Se não logado, usa cookie
-  if (!carrinhos || !carrinhos.length) {
-    carrinhos = getCarrinhoCookie();
+    const res = await fetch(`${API_BASE_URL}/login/verificaSeUsuarioEstaLogado`, { 
+      method: 'POST',
+      credentials: 'include' 
+    });
+    const data = await res.json();
+    return data.status === 'ok';
+  } catch {
+    return false;
   }
+}
+
+// Carrega os carrinhos do usuário
+async function carregarUsuarioCarrinhos() {
   const container = document.getElementById('usuario-carrinhos-container');
+  const logado = await verificarUsuarioLogado();
+  let carrinhos = [];
+
+  console.log('Usuário logado?', logado);
+
+  try {
+    if (logado) {
+      // Busca carrinhos do backend (já vem com itens)
+      const res = await fetch(`${API_BASE_URL}/carrinho/meusCarrinhos`, { 
+        credentials: 'include' 
+      });
+      console.log('Status da resposta:', res.status);
+      
+      if (res.ok) {
+        carrinhos = await res.json();
+        console.log('Carrinhos recebidos:', carrinhos);
+      } else {
+        console.error('Erro ao buscar carrinhos:', res.status);
+      }
+    } else {
+      // Busca carrinhos do cookie para visitantes
+      carrinhos = getCarrinhoCookie();
+      console.log('Carrinhos do cookie:', carrinhos);
+    }
+  } catch (error) {
+    console.error('Erro ao carregar carrinhos:', error);
+    exibirMensagem('Erro ao carregar carrinhos', 'erro');
+  }
+
+  // Renderiza os carrinhos
   container.innerHTML = '';
-  if (!carrinhos.length) {
-    container.innerHTML = '<p>Você não possui carrinhos.</p>';
+  
+  if (!carrinhos || !carrinhos.length) {
+    container.innerHTML = `
+      <div class="vazio">
+        <p>Você ainda não possui carrinhos.</p>
+        <p>Clique em "Novo Carrinho" para criar seu primeiro carrinho de compras.</p>
+      </div>
+    `;
     return;
   }
-  carrinhos.forEach((carrinho, idx) => {
+
+  const carrinhoAtual = getCarrinhoAtualCookie();
+
+  carrinhos.forEach((carrinho) => {
     const div = document.createElement('div');
-    div.className = 'carrinho';
-    div.innerHTML = `<strong>ID:</strong> ${carrinho.id_carrinho || idx+1} <button onclick="excluirUsuarioCarrinho(${idx})">Excluir</button>`;
+    div.className = 'carrinho-card';
+    
+    if (carrinho.id_carrinho == carrinhoAtual) {
+      div.classList.add('carrinho-ativo');
+    }
+
+    const dataFormatada = carrinho.data_carrinho 
+      ? new Date(carrinho.data_carrinho).toLocaleDateString('pt-BR')
+      : 'Data não disponível';
+
+    // Garante que itens seja um array
+    const itensArray = Array.isArray(carrinho.itens) ? carrinho.itens : [];
+    const totalItens = itensArray.length;
+    const quantidadeTotal = itensArray.reduce((sum, item) => {
+      const qtd = item.quantidade || item.quant_livro || 0;
+      return sum + qtd;
+    }, 0);
+
+    console.log(`Carrinho #${carrinho.id_carrinho}:`, {
+      itens: itensArray,
+      totalItens,
+      quantidadeTotal
+    });
+
+    div.innerHTML = `
+      <div class="carrinho-header">
+        <div class="carrinho-info">
+          <h3>Carrinho #${carrinho.id_carrinho}</h3>
+          <span class="carrinho-data">${dataFormatada}</span>
+        </div>
+        <div class="carrinho-badges">
+          ${carrinho.id_carrinho == carrinhoAtual ? '<span class="badge badge-ativo">Ativo</span>' : ''}
+          <span class="badge badge-itens">${totalItens} ${totalItens === 1 ? 'item' : 'itens'}</span>
+        </div>
+      </div>
+
+      <div class="carrinho-resumo">
+        <p><strong>Total de produtos:</strong> ${quantidadeTotal} unidade(s)</p>
+      </div>
+
+      ${totalItens > 0 ? `
+        <div class="carrinho-itens">
+          <h4>Itens do carrinho:</h4>
+          <ul class="lista-itens">
+            ${itensArray.map(item => {
+              const nome = item.nome || item.nome_livro || 'Item';
+              const qtd = item.quantidade || item.quant_livro || 0;
+              return `
+                <li class="item">
+                  <span class="item-nome">${nome}</span>
+                  <span class="item-quantidade">Qtd: ${qtd}</span>
+                </li>
+              `;
+            }).join('')}
+          </ul>
+        </div>
+      ` : '<p class="carrinho-vazio-msg">Este carrinho está vazio</p>'}
+
+      <div class="carrinho-acoes">
+        ${carrinho.id_carrinho != carrinhoAtual ? `
+          <button class="btn btn-selecionar" onclick="selecionarCarrinho(${carrinho.id_carrinho})">
+            Usar este carrinho
+          </button>
+        ` : `
+          <button class="btn btn-ativo" disabled>
+            Carrinho em uso
+          </button>
+        `}
+        <button class="btn btn-excluir" onclick="excluirUsuarioCarrinho(${carrinho.id_carrinho})">
+          Excluir
+        </button>
+      </div>
+    `;
+    
     container.appendChild(div);
   });
 }
 
-async function adicionarUsuarioCarrinho() {
-  // Se logado, salva no backend
-  let logado = false;
-  try {
-    const resLogin = await fetch(`${API_BASE_URL}/login/verificaSeUsuarioEstaLogado`, { credentials: 'include' });
-    const dataLogin = await resLogin.json();
-    logado = dataLogin.status === 'ok';
-  } catch {}
-  if (logado) {
-    await fetch(`${API_BASE_URL}/carrinho/`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify({ /* dados do carrinho */ })
-    });
-  } else {
-    // Visitante: salva no cookie
-    let carrinhos = getCarrinhoCookie();
-    const novoCarrinho = { id_carrinho: Date.now(), itens: [] };
-    carrinhos.push(novoCarrinho);
-    setCarrinhoCookie(carrinhos);
-  }
+// Seleciona um carrinho como ativo
+async function selecionarCarrinho(idCarrinho) {
+  setCarrinhoAtualCookie(idCarrinho);
+  exibirMensagem(`Carrinho #${idCarrinho} selecionado com sucesso!`, 'sucesso');
   await carregarUsuarioCarrinhos();
 }
 
-async function excluirUsuarioCarrinho(idx) {
-  // Se logado, exclui no backend
-  let logado = false;
+// Cria um novo carrinho
+async function criarNovoCarrinho() {
+  const logado = await verificarUsuarioLogado();
+
   try {
-    const resLogin = await fetch(`${API_BASE_URL}/login/verificaSeUsuarioEstaLogado`, { credentials: 'include' });
-    const dataLogin = await resLogin.json();
-    logado = dataLogin.status === 'ok';
-  } catch {}
-  if (logado) {
-    // Aqui você pode adaptar para excluir pelo id real do carrinho
-    // await fetch(`${API_BASE_URL}/carrinho/${id}`, { method: 'DELETE', credentials: 'include' });
-  } else {
-    // Visitante: exclui do cookie
-    let carrinhos = getCarrinhoCookie();
-    carrinhos.splice(idx, 1);
-    setCarrinhoCookie(carrinhos);
+    if (logado) {
+      // Usuário logado: cria no backend
+      const res = await fetch(`${API_BASE_URL}/carrinho/novo`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include'
+      });
+
+      if (res.ok) {
+        const novoCarrinho = await res.json();
+        exibirMensagem(`Novo carrinho #${novoCarrinho.id_carrinho} criado!`, 'sucesso');
+        setCarrinhoAtualCookie(novoCarrinho.id_carrinho);
+      } else {
+        exibirMensagem('Erro ao criar carrinho', 'erro');
+      }
+    } else {
+      // Visitante: salva no cookie
+      let carrinhos = getCarrinhoCookie();
+      const novoCarrinho = { 
+        id_carrinho: Date.now(), 
+        data_carrinho: new Date().toISOString(),
+        itens: [] 
+      };
+      carrinhos.push(novoCarrinho);
+      setCarrinhoCookie(carrinhos);
+      setCarrinhoAtualCookie(novoCarrinho.id_carrinho);
+      exibirMensagem(`Novo carrinho criado!`, 'sucesso');
+    }
+
+    await carregarUsuarioCarrinhos();
+  } catch (error) {
+    console.error('Erro ao criar carrinho:', error);
+    exibirMensagem('Erro ao criar novo carrinho', 'erro');
   }
-  await carregarUsuarioCarrinhos();
+}
+
+// Exclui um carrinho
+async function excluirUsuarioCarrinho(idCarrinho) {
+  if (!confirm('Tem certeza que deseja excluir este carrinho?')) {
+    return;
+  }
+
+  const logado = await verificarUsuarioLogado();
+
+  try {
+    if (logado) {
+      // Usuário logado: exclui no backend
+      const res = await fetch(`${API_BASE_URL}/carrinho/${idCarrinho}`, { 
+        method: 'DELETE', 
+        credentials: 'include' 
+      });
+
+      if (res.ok || res.status === 204) {
+        exibirMensagem('Carrinho excluído com sucesso!', 'sucesso');
+        
+        // Se era o carrinho ativo, limpa o cookie
+        if (getCarrinhoAtualCookie() == idCarrinho) {
+          document.cookie = 'carrinhoAtual=;path=/;max-age=0';
+        }
+      } else {
+        exibirMensagem('Erro ao excluir carrinho', 'erro');
+      }
+    } else {
+      // Visitante: exclui do cookie
+      let carrinhos = getCarrinhoCookie();
+      carrinhos = carrinhos.filter(c => c.id_carrinho != idCarrinho);
+      setCarrinhoCookie(carrinhos);
+      
+      if (getCarrinhoAtualCookie() == idCarrinho) {
+        document.cookie = 'carrinhoAtual=;path=/;max-age=0';
+      }
+      
+      exibirMensagem('Carrinho excluído com sucesso!', 'sucesso');
+    }
+
+    await carregarUsuarioCarrinhos();
+  } catch (error) {
+    console.error('Erro ao excluir carrinho:', error);
+    exibirMensagem('Erro ao excluir carrinho', 'erro');
+  }
 }
