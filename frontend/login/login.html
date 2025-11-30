@@ -46,7 +46,7 @@
       } else {
         const cadastrar = confirm("E-mail não encontrado. Deseja se cadastrar?");
         if (cadastrar) {
-          alert("Redirecionando para tela de cadastro... (não implementado)");
+          window.location.href = API_BASE_URL + "/cadastro/cadastroUsuario.html";
         }
       }
     }

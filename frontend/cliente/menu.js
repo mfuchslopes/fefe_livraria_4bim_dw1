@@ -367,8 +367,16 @@ document.getElementById('btnFecharCarrinho').onclick = function() {
 async function adicionarItemCarrinho(livro) {
   let carrinho = await getCarrinho();
 
+   // Verifica se usuário está logado
+  const resLogin = await fetch(API_BASE_URL + '/login/verificaSeUsuarioEstaLogado', { 
+    method: 'POST', 
+    credentials: 'include' 
+  });
+  const dataLogin = await resLogin.json();
+  const logado = dataLogin.status === 'ok';
+
   // Se não existe carrinho, cria um novo no backend
-  if (!carrinho.id_carrinho) {
+  if (!carrinho.id_carrinho && logado) {
     try {
       const res = await fetch(`${API_BASE_URL}/carrinho/novo`, {
         method: 'POST',
@@ -455,7 +463,7 @@ async function setCarrinho(carrinho, criarNovo = false) {
     }
   } else {
     // Para visitantes, mantém no cookie
-    document.cookie = `carrinhoUsuario=${encodeURIComponent(JSON.stringify(carrinho))};path=/;max-age=604800`;
+    document.cookie = `carrinhoAtual=${encodeURIComponent(JSON.stringify(carrinho))};path=/;max-age=604800`;
   }
 }
 
@@ -497,12 +505,20 @@ async function getCarrinho() {
     } catch (err) {
       console.error('Erro ao buscar carrinho no backend:', err);
     }
+
+    return carrinho;
+    
   } else {
-    const match = document.cookie.match(/(?:^|; )carrinhoUsuario=([^;]*)/);
-    carrinho = match ? JSON.parse(decodeURIComponent(match[1])) : { itens: [] };
+    const cookie = getCarrinhoAtualCookie();
+    if (cookie) {
+        try {
+            carrinho = JSON.parse(cookie);
+        } catch {
+            carrinho = { itens: [] };
+        }
+    }
+    return carrinho;
   }
-  
-  return carrinho;
 }
 
 async function logoutConfirmado() {
@@ -522,7 +538,7 @@ async function logoutConfirmado() {
 
     if (data.status === 'deslogado') {
       alert("Você saiu da sua conta.");
-      window.location.href = "../login/login.html";  
+      window.location.href = "../logout/logout.html";  
     } else {
       alert("Erro ao sair. Tente novamente.");
     }
@@ -532,3 +548,4 @@ async function logoutConfirmado() {
     alert("Erro ao deslogar. Tente novamente.");
   }
 }
+

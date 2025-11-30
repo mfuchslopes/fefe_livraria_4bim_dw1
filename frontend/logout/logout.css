@@ -81,13 +81,13 @@ button {
 }
 
 /* Botão de login */
-#btnLogin {
+#btnLogin, #btnCadastrar {
   background: rgba(255, 255, 255, 0.07);
   border: 1px solid rgba(191, 167, 111, 0.4);
   color: #e6d6b8;
 }
 
-#btnLogin:hover {
+#btnLogin:hover, #btnCadastrar:hover {
   background: rgba(255, 255, 255, 0.12);
   border-color: #bfa76f;
   transform: translateY(-2px);

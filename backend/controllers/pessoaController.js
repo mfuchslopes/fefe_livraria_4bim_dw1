@@ -276,6 +276,12 @@ exports.criarUsuario = async (req, res) => {
         error: 'Email já está em uso'
       });
     } 
+     // CPF duplicado
+    if (error.code === '23505' && error.constraint === 'pessoa_cpf_key') {
+      return res.status(400).json({
+        error: 'CPF já está cadastrado'
+      });
+    }
     // Verifica se é erro de violação de constraint NOT NULL
     if (error.code === '23502') {
       return res.status(400).json({

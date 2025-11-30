@@ -439,7 +439,7 @@ async function setCarrinho(carrinho, criarNovo = false) {
     }
   } else {
     // Para visitantes, mantém no cookie
-    document.cookie = `carrinhoUsuario=${encodeURIComponent(JSON.stringify(carrinho))};path=/;max-age=604800`;
+    document.cookie = `carrinhoAtual=${encodeURIComponent(JSON.stringify(carrinho))};path=/;max-age=604800`;
   }
 }
 
@@ -483,7 +483,7 @@ async function getCarrinho() {
       console.error('Erro ao buscar carrinho no backend:', err);
     }
   } else {
-    const match = document.cookie.match(/(?:^|; )carrinhoUsuario=([^;]*)/);
+    const match = document.cookie.match(/(?:^|; )carrinhoAtual=([^;]*)/);
     carrinho = match ? JSON.parse(decodeURIComponent(match[1])) : { itens: [] };
   }
   
