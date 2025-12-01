@@ -440,6 +440,14 @@ async function setCarrinho(carrinho, criarNovo = false) {
     logado = dataLogin.status === 'ok';
   } catch {}
 
+    // Normalização SEMPRE
+  if (!carrinho || typeof carrinho !== 'object') {
+    carrinho = { itens: [] };
+  }
+  if (!Array.isArray(carrinho.itens)) {
+    carrinho.itens = [];
+  }
+
   if (logado) {
     if (criarNovo) {
       const res = await fetch(API_BASE_URL + '/carrinho/novo', {
@@ -505,20 +513,21 @@ async function getCarrinho() {
     } catch (err) {
       console.error('Erro ao buscar carrinho no backend:', err);
     }
-
-    return carrinho;
-    
   } else {
-    const cookie = getCarrinhoAtualCookie();
-    if (cookie) {
-        try {
-            carrinho = JSON.parse(cookie);
-        } catch {
-            carrinho = { itens: [] };
-        }
-    }
-    return carrinho;
+    const match = document.cookie.match(/(?:^|; )carrinhoAtual=([^;]*)/);
+    
+  try {
+    carrinho = match ? JSON.parse(decodeURIComponent(match[1])) : { itens: [] };
+  } catch (e) {
+    carrinho = { itens: [] };
   }
+
+  // Garantir que sempre existe carrinho.itens
+  if (!carrinho || typeof carrinho !== 'object' || !Array.isArray(carrinho.itens)) {
+    carrinho = { itens: [] };
+  }
+  
+  return carrinho;
 }
 
 async function logoutConfirmado() {
@@ -548,4 +557,4 @@ async function logoutConfirmado() {
     alert("Erro ao deslogar. Tente novamente.");
   }
 }
-
+}
