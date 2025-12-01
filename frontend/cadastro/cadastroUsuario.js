@@ -204,7 +204,7 @@ document.getElementById('formCadastro').addEventListener('submit', async functio
   const confirmarSenha = document.getElementById('confirmarSenha').value;
   
   let temErro = false;
-  
+   
   // Validações
   if (nome.length < 3) {
     mostrarErro('nome', 'Nome deve ter pelo menos 3 caracteres');

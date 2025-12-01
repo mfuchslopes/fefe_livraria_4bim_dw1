@@ -50,7 +50,7 @@
         }
       }
     }
-
+ 
     async function verificarSenha() {
       const senha = document.getElementById("senha").value;
       //  alert("Verificando senha..." + senha);
@@ -66,11 +66,87 @@
       //  alert("Resposta do servidor: " + JSON.stringify(data));
 
       if (data.status === 'ok') {
+        try {
+          // Obtém carrinho local antes de fazer o cadastro
+          const carrinhoLocal = getCarrinhoFromCookie();
+          // Transfere carrinho do cookie para o banco
+        await transferirCarrinho(carrinhoLocal);
+        } catch (error) {
+          console.error("Erro ao transferir carrinho:", error);
+        }
+        
         window.location.href = API_BASE_URL + "/cliente/menu.html";
       } else {
         alert("Senha incorreta!");
       }
     }
+
+    // Função para obter carrinho do cookie
+    function getCarrinhoFromCookie() {
+      const match = document.cookie.match(/(?:^|; )carrinhoAtual=([^;]*)/);
+      if (match) {
+        try {
+          return JSON.parse(decodeURIComponent(match[1]));
+        } catch (e) {
+          return null;
+        }
+      }
+      return null;
+    }
+
+    async function transferirCarrinho(carrinhoLocal) {
+      if (!carrinhoLocal || !carrinhoLocal.itens || carrinhoLocal.itens.length === 0) {
+        return;
+      }
+
+      try {
+        console.log("Transferindo carrinho do cookie para o banco...");
+
+        // 1. Criar um carrinho no backend (associado ao usuário logado)
+        const resNovoCarrinho = await fetch(`${API_BASE_URL}/carrinho/novo`, {
+          method: 'POST',
+          credentials: 'include'
+        });
+
+        if (!resNovoCarrinho.ok) {
+          console.error('Erro ao criar carrinho no banco');
+          return;
+        }
+
+        const novoCarrinho = await resNovoCarrinho.json();
+        const idCarrinho = novoCarrinho.id_carrinho;
+
+        console.log("Carrinho criado no BD:", idCarrinho);
+
+        // 2. Adicionar cada item ao carrinho, usando a rota certa
+        for (const item of carrinhoLocal.itens) {
+          console.log(`Salvando item no carrinho: livro ${item.id_livro}, qnt ${item.quantidade}`);
+
+          await fetch(`${API_BASE_URL}/carrinho_livros/`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({
+              id_carrinho: idCarrinho,
+              id_livro: item.id_livro,
+              quant_livro: item.quantidade
+            })
+          });
+        }
+
+        // 3. Remover carrinho antigo do cookie
+        document.cookie = 'carrinhoAtual=; path=/; max-age=0';
+
+        // 4. Definir o carrinhoAtual no cookie
+        document.cookie = `carrinhoAtual=${idCarrinho}; path=/; max-age=604800`;
+
+        console.log("Carrinho transferido com sucesso!");
+
+      } catch (error) {
+        console.error('Erro ao transferir carrinho:', error);
+      }
+    }
+
   </script>
 </body>
 
