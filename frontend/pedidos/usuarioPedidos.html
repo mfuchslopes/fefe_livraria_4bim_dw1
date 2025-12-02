@@ -2,11 +2,51 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Meus Pedidos</title>
+  <link rel="stylesheet" href="usuarioPedidos.css">
 </head>
 <body>
-  <h2>Pedidos Pagos</h2>
-  <div id="pedidos-container"></div>
-  <script src="pedidos.js"></script>
+  <div class="container">
+    <h1>📦 Meus Pedidos</h1>
+    <p class="subtitle">Histórico completo de suas compras</p>
+
+    <div class="filtros">
+      <div class="filtro-group">
+        <label for="filtroMes">Filtrar por Mês:</label>
+        <select id="filtroMes">
+          <option value="">Todos os meses</option>
+        </select>
+      </div>
+
+      <div class="filtro-group">
+        <label for="filtroGenero">Filtrar por Gênero:</label>
+        <select id="filtroGenero">
+          <option value="">Todos os gêneros</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="resumo">
+      <div class="resumo-card">
+        <h3>Total de Pedidos</h3>
+        <div class="valor" id="totalPedidos">0</div>
+      </div>
+      <div class="resumo-card">
+        <h3>Total Gasto</h3>
+        <div class="valor" id="totalGasto">R$ 0,00</div>
+      </div>
+      <div class="resumo-card">
+        <h3>Itens Comprados</h3>
+        <div class="valor" id="totalItens">0</div>
+      </div>
+    </div>
+
+    <div id="pedidos-container">
+      <div class="loading">Carregando pedidos...</div>
+    </div>
+  </div>
+
+  <script src="usuarioPedidos.js"></script>
 </body>
 </html>

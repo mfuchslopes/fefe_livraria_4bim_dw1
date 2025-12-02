@@ -47,7 +47,30 @@ async function verificarUsuarioLogado() {
   }
 }
 
-// Carrega os carrinhos do usuário
+// Filtra carrinhos removendo os que já foram pagos
+async function filtrarCarrinhosNaoPagos(carrinhos) {
+  try {
+    const carrinhosFiltrados = [];
+    
+    for (const carrinho of carrinhos) {
+      const res = await fetch(`${API_BASE_URL}/pagamento/carrinho/${carrinho.id_carrinho}`, {
+        credentials: 'include'
+      });
+      
+      // Se retornar 404, o carrinho não foi pago
+      if (res.status === 404) {
+        carrinhosFiltrados.push(carrinho);
+      }
+    }
+    
+    return carrinhosFiltrados;
+  } catch (error) {
+    console.error('Erro ao filtrar carrinhos pagos:', error);
+    return carrinhos; // Retorna todos se houver erro
+  }
+}
+
+// Carrega os carrinhos do usuário (apenas os não pagos)
 async function carregarUsuarioCarrinhos() {
   const container = document.getElementById('usuario-carrinhos-container');
   const logado = await verificarUsuarioLogado();
@@ -57,7 +80,7 @@ async function carregarUsuarioCarrinhos() {
 
   try {
     if (logado) {
-      // Busca carrinhos do backend (já vem com itens)
+      // Busca carrinhos do backend
       const res = await fetch(`${API_BASE_URL}/carrinho/meusCarrinhos`, { 
         credentials: 'include' 
       });
@@ -66,11 +89,16 @@ async function carregarUsuarioCarrinhos() {
       if (res.ok) {
         carrinhos = await res.json();
         console.log('Carrinhos recebidos:', carrinhos);
+        
+        // Filtra apenas os carrinhos não pagos
+        carrinhos = await filtrarCarrinhosNaoPagos(carrinhos);
+        console.log('Carrinhos não pagos:', carrinhos);
       } else {
         console.error('Erro ao buscar carrinhos:', res.status);
       }
     } else {
-      // Busca carrinhos do cookie para visitantes
+      // Para visitantes, mostra todos os carrinhos do cookie
+      // (visitantes não têm pagamentos no banco)
       carrinhos = getCarrinhoCookie();
       console.log('Carrinhos do cookie:', carrinhos);
     }
@@ -85,7 +113,7 @@ async function carregarUsuarioCarrinhos() {
   if (!carrinhos || !carrinhos.length) {
     container.innerHTML = `
       <div class="vazio">
-        <p>Você ainda não possui carrinhos.</p>
+        <p>Você ainda não possui carrinhos não pagos.</p>
         <p>Clique em "Novo Carrinho" para criar seu primeiro carrinho de compras.</p>
       </div>
     `;

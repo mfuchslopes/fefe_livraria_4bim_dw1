@@ -226,4 +226,49 @@ exports.obterPagamentoPorCarrinho = async (req, res) => {
     console.error('Erro ao buscar pagamento por carrinho:', error);
     res.status(500).json({ mensagem: 'Erro interno do servidor' });
   }
+}
+
+// Adicionar esta função ao final do pagamentoController.js
+
+exports.pedidosPagos = async (req, res) => {
+  try {
+    // Recupera o nome do usuário logado pelo cookie
+    const nome = req.cookies.usuarioLogado;
+    if (!nome) {
+      return res.status(401).json({ error: 'Usuário não logado' });
+    }
+
+    // Busca o id_pessoa pelo nome
+    const pessoaResult = await query(
+      'SELECT id_pessoa FROM pessoa WHERE nome = $1', 
+      [nome]
+    );
+    
+    if (!pessoaResult.rows.length) {
+      return res.status(400).json({ error: 'Pessoa não encontrada' });
+    }
+    
+    const id_pessoa = pessoaResult.rows[0].id_pessoa;
+
+    // Busca todos os pagamentos dos carrinhos deste usuário
+    // A tabela pagamento usa id_carrinho como PK, não tem id_pagamento
+    const result = await query(
+      `SELECT 
+        p.id_carrinho as id_pagamento,
+        p.id_carrinho,
+        p.data_pagamento,
+        p.valor_pag as valor,
+        c.data_carrinho
+      FROM pagamento p
+      JOIN carrinho c ON p.id_carrinho = c.id_carrinho
+      WHERE c.id_pessoa = $1
+      ORDER BY p.data_pagamento DESC`,
+      [id_pessoa]
+    );
+
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Erro ao buscar pedidos pagos:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
 };
