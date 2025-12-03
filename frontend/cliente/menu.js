@@ -515,16 +515,17 @@ async function getCarrinho() {
     }
   } else {
     const match = document.cookie.match(/(?:^|; )carrinhoAtual=([^;]*)/);
-    
-  try {
-    carrinho = match ? JSON.parse(decodeURIComponent(match[1])) : { itens: [] };
-  } catch (e) {
-    carrinho = { itens: [] };
-  }
+      
+    try {
+      carrinho = match ? JSON.parse(decodeURIComponent(match[1])) : { itens: [] };
+    } catch (e) {
+      carrinho = { itens: [] };
+    }
 
-  // Garantir que sempre existe carrinho.itens
-  if (!carrinho || typeof carrinho !== 'object' || !Array.isArray(carrinho.itens)) {
-    carrinho = { itens: [] };
+    // Garantir que sempre existe carrinho.itens
+    if (!carrinho || typeof carrinho !== 'object' || !Array.isArray(carrinho.itens)) {
+      carrinho = { itens: [] };
+    }
   }
   
   return carrinho;
@@ -556,5 +557,4 @@ async function logoutConfirmado() {
     console.error("Erro ao deslogar:", err);
     alert("Erro ao deslogar. Tente novamente.");
   }
-}
 }
